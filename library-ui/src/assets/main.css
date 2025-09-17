@@ -1,0 +1,155 @@
+/* 全局样式 */
+:root {
+  --primary-color: #409eff;
+  --success-color: #67c23a;
+  --warning-color: #e6a23c;
+  --danger-color: #f56c6c;
+  --info-color: #909399;
+  --text-color: #303133;
+  --text-color-secondary: #606266;
+  --border-color: #dcdfe6;
+  --background-color: #f5f7fa;
+}
+
+/* 页面通用布局 */
+.page-container {
+  padding: 20px;
+  height: 100%;
+}
+
+.page-title {
+  font-size: 22px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+.search-container {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.action-container {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+/* 卡片样式 */
+.card {
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  transition: all 0.3s;
+}
+
+.card:hover {
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px);
+}
+
+/* 状态标签 */
+.status-tag {
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  display: inline-block;
+}
+
+.status-success {
+  background-color: rgba(103, 194, 58, 0.1);
+  color: var(--success-color);
+}
+
+.status-warning {
+  background-color: rgba(230, 162, 60, 0.1);
+  color: var(--warning-color);
+}
+
+.status-danger {
+  background-color: rgba(245, 108, 108, 0.1);
+  color: var(--danger-color);
+}
+
+/* 动画效果 */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* 工具类 */
+.mb-10 {
+  margin-bottom: 10px;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+.ml-10 {
+  margin-left: 10px;
+}
+
+.mr-10 {
+  margin-right: 10px;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+} 
