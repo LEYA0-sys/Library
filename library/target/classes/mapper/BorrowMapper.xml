@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.library.subscription.mapper.BorrowMapper">
+
+    <!-- 获取用户借阅列表 -->
+    <select id="getUserBorrowList" resultType="com.library.subscription.entity.Borrow">
+        SELECT a.*, b.book_name as bookName, b.cover
+        FROM bs_borrow a
+        LEFT JOIN bs_book b ON a.book_id = b.id
+        WHERE a.user_id = #{userId}
+        <if test="status != null and status != ''">
+            AND a.borrow_status = #{status}
+        </if>
+        ORDER BY a.create_time DESC
+    </select>
+    
+    <!-- 获取借阅详情 -->
+    <select id="getBorrowDetail" resultType="com.library.subscription.entity.Borrow">
+        SELECT a.*, b.book_name as bookName, b.cover, b.author
+        FROM bs_borrow a
+        LEFT JOIN bs_book b ON a.book_id = b.id
+        WHERE a.id = #{id}
+    </select>
+    
+    <!-- 获取借阅列表 -->
+    <select id="getBorrowList" resultType="com.library.subscription.entity.Borrow">
+        SELECT a.*, b.book_name as bookName, u.username
+        FROM bs_borrow a
+        LEFT JOIN bs_book b ON a.book_id = b.id
+        LEFT JOIN bs_user u ON a.user_id = u.id
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (b.book_name LIKE CONCAT('%', #{keyword}, '%') OR u.username LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+        </where>
+        ORDER BY a.create_time DESC
+    </select>
+</mapper> 

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.library.subscription.mapper.BookMapper">
+
+    <!-- 基础结果映射 -->
+    <resultMap id="BaseResultMap" type="com.library.subscription.entity.Book">
+        <id column="id" property="id"/>
+        <result column="book_name" property="bookName"/>
+        <result column="author" property="author"/>
+        <result column="book_code" property="bookCode"/>
+        <result column="status" property="status"/>
+        <result column="borrow_count" property="borrowCount"/>
+        <result column="user_id" property="userId"/>
+        <result column="cover" property="cover"/>
+        <result column="description" property="description"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+    
+    <!-- 带有类型信息的结果映射 -->
+    <resultMap id="BookWithTypesMap" type="com.library.subscription.entity.Book" extends="BaseResultMap">
+        <collection property="bookTypes" ofType="com.library.subscription.entity.BookType">
+            <id column="type_id" property="id"/>
+            <result column="type_name" property="typeName"/>
+            <result column="create_time" property="createTime" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+    
+    <!-- 获取带有类型信息的图书 -->
+    <select id="getBookWithTypes" resultMap="BookWithTypesMap" parameterType="java.lang.Long">
+        SELECT 
+            b.*,
+            t.id as type_id,
+            t.type_name
+        FROM 
+            bs_book b
+        LEFT JOIN 
+            bs_book_type_relation r ON b.id = r.book_id
+        LEFT JOIN 
+            bs_book_type t ON r.type_id = t.id
+        WHERE 
+            b.id = #{id}
+    </select>
+    
+    <!-- 根据关键字搜索图书 -->
+    <select id="searchBooks" resultMap="BaseResultMap">
+        SELECT 
+            *
+        FROM 
+            bs_book
+        WHERE 
+            book_name LIKE CONCAT('%', #{keyword}, '%')
+            OR author LIKE CONCAT('%', #{keyword}, '%')
+            OR book_code LIKE CONCAT('%', #{keyword}, '%')
+    </select>
+    
+    <!-- 获取所有带分类信息的图书列表 -->
+    <select id="getBookListWithTypes" resultMap="BookWithTypesMap">
+        SELECT 
+            b.*,
+            t.id as type_id,
+            t.type_name
+        FROM 
+            bs_book b
+        LEFT JOIN 
+            bs_book_type_relation r ON b.id = r.book_id
+        LEFT JOIN 
+            bs_book_type t ON r.type_id = t.id
+        <where>
+            <if test="keyword != null and keyword != ''">
+                (b.book_name LIKE CONCAT('%', #{keyword}, '%')
+                OR b.author LIKE CONCAT('%', #{keyword}, '%')
+                OR b.book_code LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+        </where>
+        ORDER BY b.id
+    </select>
+    
+    <!-- 根据分类ID获取带分类信息的图书列表 -->
+    <select id="getBooksByTypeWithTypes" resultMap="BookWithTypesMap">
+        SELECT 
+            b.*,
+            t.id as type_id,
+            t.type_name
+        FROM 
+            bs_book b
+        JOIN 
+            bs_book_type_relation r ON b.id = r.book_id
+        LEFT JOIN 
+            bs_book_type t ON r.type_id = t.id
+        WHERE 
+            r.type_id = #{typeId}
+        ORDER BY b.id
+    </select>
+</mapper> 

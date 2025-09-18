@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.library.subscription.mapper.CreditRecordMapper">
+
+    <!-- 基础结果映射 -->
+    <resultMap id="BaseResultMap" type="com.library.subscription.entity.CreditRecord">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="credit_change" property="creditChange"/>
+        <result column="reason" property="reason"/>
+        <result column="change_time" property="changeTime"/>
+    </resultMap>
+    
+    <!-- 带有用户信息的结果映射 -->
+    <resultMap id="CreditRecordWithUserMap" type="com.library.subscription.entity.CreditRecord" extends="BaseResultMap">
+        <result column="username" property="username"/>
+    </resultMap>
+    
+    <!-- 获取带有用户信息的信用记录列表 -->
+    <select id="getCreditRecordWithUser" resultMap="CreditRecordWithUserMap">
+        SELECT 
+            c.*,
+            u.username
+        FROM 
+            bs_credit_record c
+        LEFT JOIN 
+            bs_user u ON c.user_id = u.id
+        ORDER BY 
+            c.change_time DESC
+    </select>
+    
+    <!-- 获取用户的信用记录列表 -->
+    <select id="getUserCreditRecords" resultMap="BaseResultMap">
+        SELECT 
+            *
+        FROM 
+            bs_credit_record
+        WHERE 
+            user_id = #{userId}
+        ORDER BY 
+            change_time DESC
+    </select>
+</mapper> 

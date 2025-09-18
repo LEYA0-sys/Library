@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.library.subscription.mapper.CommentMapper">
+
+    <!-- 基础结果映射 -->
+    <resultMap id="BaseResultMap" type="com.library.subscription.entity.Comment">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="content" property="content"/>
+        <result column="comment_time" property="commentTime"/>
+    </resultMap>
+    
+    <!-- 带有用户信息的结果映射 -->
+    <resultMap id="CommentWithUserMap" type="com.library.subscription.entity.Comment" extends="BaseResultMap">
+        <result column="username" property="username"/>
+    </resultMap>
+    
+    <!-- 获取带有用户信息的留言列表 -->
+    <select id="getCommentWithUser" resultMap="CommentWithUserMap">
+        SELECT 
+            c.*,
+            u.username
+        FROM 
+            bs_comment c
+        LEFT JOIN 
+            bs_user u ON c.user_id = u.id
+        ORDER BY 
+            c.comment_time DESC
+    </select>
+</mapper> 
